@@ -1,0 +1,39 @@
+# Redundant for clarity
+export ZDOTDIR=$HOME/.config/zsh/
+
+# Path modifications
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin
+export PATH=$PATH:/home/blara/.local/bin
+export PATH=/usr/local/sbin:$PATH
+export PATH=/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:$PATH
+export PATH=/opt/homebrew/bin:$PATH
+export PATH=/usr/local/bin/brew:$PATH
+export PYENV_ROOT="$HOME/.pyenv"
+
+# GPG
+
+export KEYID=0x82BA88A402D9EF28
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+# Go
+export GOPATH=$HOME/go
+export GO=$GOPATH/src/github.com/brlara
+export PATH=$PATH:$GOPATH/bin
+
+# vim config
+export VIM_CONFIG=$HOME/.vimrc
+
+# nvim config
+export NVIM_CONFIG=$HOME/.config/nvim/
+
+# GPG Agent Forwarding
+export GPG_TTY=$TTY
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+# GKE v1.25+ auth plugin
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+# Azure CLI disable telemetry
+export DOTNET_CLI_TELEMETRY_OPTOUT=1

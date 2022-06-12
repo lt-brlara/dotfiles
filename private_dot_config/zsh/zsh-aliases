@@ -1,0 +1,19 @@
+# ls aliases
+
+alias ls='exa'
+alias lt='lt --icons'
+#alias ll='ls -l'
+#alias la='ls -la'
+
+# keepassxc-cli aliases
+
+alias kp='keepassxc-cli'
+
+# gcc aliases
+
+alias gcc='g++-11'
+alias cc='gcc-11'
+alias g++='g++-11'
+alias c++='c++-11'
+
+eval $(thefuck --alias)
