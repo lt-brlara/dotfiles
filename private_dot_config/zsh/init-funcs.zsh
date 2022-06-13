@@ -1,5 +1,5 @@
 
-source ./logging.sh
+source $ZDOTDIR/logging.sh
 
 SCRIPTENTRY
 
