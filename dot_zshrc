@@ -17,7 +17,13 @@ case `uname` in
 
   ;;
   Linux)
-    echo "Linux" 
-    # commands for Linux go here
+  
+    #zmodload zsh/zprof
+    export ZDOTDIR=$HOME/.config/zsh
+    source $ZDOTDIR/zshrc
+    #zprof
+
+    eval "$(direnv hook zsh)"
+
   ;;
 esac
