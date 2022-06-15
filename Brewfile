@@ -4,6 +4,9 @@ tap 'homebrew/cask-fonts'
 tap 'homebrew/cask-versions'
 tap 'homebrew/core'
 
+# Config Manager
+brew 'chezmoi'
+
 # brew-file - manages registering apps with Brew.sh
 tap 'rcmdnk/file' || true
 brew 'brew-file'
