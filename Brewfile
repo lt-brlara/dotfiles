@@ -12,6 +12,9 @@ brew 'mas'
 # Fonts
 cask 'font-fira-code'
 
+# ZSH
+brew 'zsh'
+
 # ZSH Profile Dependencies
 brew 'exa'
 brew 'peco'
