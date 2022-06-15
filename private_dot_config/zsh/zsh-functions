@@ -1,0 +1,112 @@
+
+function zsh_add_file() {
+    [ -f "$ZDOTDIR/$1" ] && source "$ZDOTDIR/$1"
+}
+
+function zsh_add_plugin() {
+    PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
+    if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then 
+        # For plugins
+        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" || \
+        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
+    else
+        git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
+    fi
+}
+
+function zsh_add_completion() {
+    PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
+    if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then 
+        # For completions
+		completion_file_path=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
+		fpath+="$(dirname "${completion_file_path}")"
+        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh"
+    else
+        git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
+		fpath+=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
+        [ -f $ZDOTDIR/.zccompdump ] && $ZDOTDIR/.zccompdump
+    fi
+	completion_file="$(basename "${completion_file_path}")"
+	if [ "$2" = true ] && compinit "${completion_file:1}"
+}
+
+_python_argcomplete() {
+    local IFS=$'\013'
+    local SUPPRESS_SPACE=0
+    if compopt +o nospace 2> /dev/null; then
+        SUPPRESS_SPACE=1
+    fi
+    COMPREPLY=( $(IFS="$IFS" \
+                  COMP_LINE="$COMP_LINE" \
+                  COMP_POINT="$COMP_POINT" \
+                  COMP_TYPE="$COMP_TYPE" \
+                  _ARGCOMPLETE_COMP_WORDBREAKS="$COMP_WORDBREAKS" \
+                  _ARGCOMPLETE=1 \
+                  _ARGCOMPLETE_SUPPRESS_SPACE=$SUPPRESS_SPACE \
+                  "$1" 8>&1 9>&2 1>/dev/null 2>/dev/null) )
+    if [[ $? != 0 ]]; then
+        unset COMPREPLY
+    elif [[ $SUPPRESS_SPACE == 1 ]] && [[ "$COMPREPLY" =~ [=/:]$ ]]; then
+        compopt -o nospace
+    fi
+}
+
+function kubectl() {
+    if ! type __start_kubectl >/dev/null 2>&1; then
+        source <(command kubectl completion zsh)
+    fi
+    command kubectl "$@"
+}
+
+function peco_change_directory {
+  local selected_dir=$(
+    (
+      echo $HOME/.config
+      ghq list -p
+      z | awk '{print $2}'
+    ) \
+    | awk '!a[$0]++' | peco --query "$LBUFFER" 
+  )
+  if [ -n "${selected_dir}" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+
+if which peco &> /dev/null; then
+ 
+  function peco_change_directory {
+    local selected_dir=$(
+      (
+        echo $HOME/.config
+        ghq list -p
+        z | awk '{print $2}'
+      ) \
+      | awk '!a[$0]++' | peco --query "$LBUFFER" 
+    )
+    if [ -n "${selected_dir}" ]; then
+      BUFFER="cd ${selected_dir}"
+      zle accept-line
+    fi
+    zle clear-screen
+  }
+
+  function peco_select_history() {
+    local tac
+    { which gtac &> /dev/null && tac="gtac" } || \
+      { which tac &> /dev/null && tac="tac" } || \
+      tac="tail -r"
+    BUFFER=$(fc -l -n 1 | eval $tac | \
+                peco --layout=bottom-up --query "$LBUFFER")
+    CURSOR=$#BUFFER # move cursor
+    zle -R -c       # refresh
+  }
+fi
+
+function gcloud() {
+    unfunction "$0"
+    source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+    source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+    command gcloud "$@"
+}
