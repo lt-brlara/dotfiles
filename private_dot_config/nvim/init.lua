@@ -1,0 +1,11 @@
+require("brlara.options")
+require("brlara.keymaps")
+require("brlara.plugins")
+require("brlara.lualine")
+require("brlara.colorscheme")
+require("brlara.cmp")
+require("brlara.lsp")
+require("brlara.telescope")
+require("brlara.treesitter")
+
+
