@@ -48,6 +48,9 @@ return packer.startup(function(use)
   -- Colorscheme
   use {'olimorris/onedarkpro.nvim'}
 
+  -- Fugitive
+  use {'tpope/vim-fugitive'}
+
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
@@ -83,6 +86,9 @@ return packer.startup(function(use)
   -- LSP Start HERE
   use {'neovim/nvim-lspconfig'}
   use {'williamboman/nvim-lsp-installer'}
+
+  -- Testing
+  use {'vim-test/vim-test'}
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
