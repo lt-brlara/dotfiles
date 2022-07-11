@@ -5,8 +5,7 @@ HISTFILE=~/.zsh_history
 
 if type brew &>/dev/null; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-    autoload -Uz compinit
-    compinit
+    autoload -U +X compinit && compinit
 fi
 
 export KEYID=0x82BA88A402D9EF28
@@ -16,7 +15,6 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpg-connect-agent updatestartuptty /bye > /dev/null
 
 export PATH="/usr/local/sbin:$PATH"
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
 # ZSH opts
 unsetopt BEEP
 
@@ -58,7 +56,6 @@ setopt    sharehistory      #Share history across terminals
 setopt    incappendhistory  #Immediately append to the history file, not just when a term is killed
 
 eval "$(direnv hook zsh)"
-#neofetch
 
 export PATH=/opt/homebrew/bin:$PATH
 
