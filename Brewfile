@@ -93,7 +93,7 @@ brew 'dapr/tap/dapr-cli'
 
 # Base Apps
 cask 'discord'
-cask 'fig'
+#cask 'fig'
 
 # To be implemented
 #cask google-chrome

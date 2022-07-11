@@ -1,9 +1,9 @@
 case `uname` in
   Darwin)
     # Fig pre block. Keep at the top of this file.
-    . "$HOME/.fig/shell/zshrc.pre.zsh"
-    export PATH="${PATH}:${HOME}/.local/bin"
-    eval "$(fig init zsh pre)"
+    #. "$HOME/.fig/shell/zshrc.pre.zsh"
+    #export PATH="${PATH}:${HOME}/.local/bin"
+    #eval "$(fig init zsh pre)"
 
     #zmodload zsh/zprof
     export ZDOTDIR=$HOME/.config/zsh
@@ -13,7 +13,7 @@ case `uname` in
     eval "$(direnv hook zsh)"
 
     # Fig post block. Keep at the bottom of this file.
-    . "$HOME/.fig/shell/zshrc.post.zsh"
+    #. "$HOME/.fig/shell/zshrc.post.zsh"
 
   ;;
   Linux)
