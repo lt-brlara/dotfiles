@@ -79,6 +79,10 @@ brew 'tmux'
 brew 'podman'
 cask 'visual-studio'
 
+## Collab
+brew 'glab'
+brew 'gh'
+
 ## Java
 tap 'adoptopenjdk/openjdk'
 
