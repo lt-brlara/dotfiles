@@ -30,6 +30,9 @@ export GOPATH=$HOME/go
 export GO=$GOPATH/src/github.com/brlara
 export PATH=$PATH:$GOPATH/bin
 
+# Rust
+export PATH=$HOME/.cargo/bin:$PATH
+
 # vim config
 export VIM_CONFIG=$HOME/.vimrc
 

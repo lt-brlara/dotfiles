@@ -92,6 +92,9 @@ brew 'node'
 ## Go
 brew 'go'
 
+## Rust
+brew 'rustup-init'
+
 ## k8s
 brew 'dapr/tap/dapr-cli'
 
