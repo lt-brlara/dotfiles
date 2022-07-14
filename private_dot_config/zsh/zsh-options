@@ -1,0 +1,10 @@
+# ZSH opts
+unsetopt BEEP
+
+# zstyle options
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' completer _extensions _complete _approximate
+
+zmodload zsh/complist
+
