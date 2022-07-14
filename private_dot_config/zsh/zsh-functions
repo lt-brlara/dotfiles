@@ -141,3 +141,13 @@ function gcloud() {
     source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
     command gcloud "$@"
 }
+
+
+# Keybind functions
+
+zle -N peco_change_directory{,}
+bindkey ^f peco_change_directory
+
+zle -N peco_select_history{,}
+bindkey ^r peco_select_history
+

@@ -35,14 +35,6 @@ zstyle ':completion:*' completer _extensions _complete _approximate
 
 zmodload zsh/complist
 
-# Keybind functions
-
-zle -N peco_change_directory{,}
-bindkey ^f peco_change_directory
-
-zle -N peco_select_history{,}
-bindkey ^r peco_select_history
-
 eval "$(direnv hook zsh)"
 
 export PATH=/opt/homebrew/bin:$PATH
