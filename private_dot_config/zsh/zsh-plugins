@@ -1,0 +1,3 @@
+zsh_add_plugin "zsh-users/zsh-autosuggestions"
+zsh_add_plugin "agkozak/zsh-z"
+
