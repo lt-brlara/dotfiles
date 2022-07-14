@@ -1,6 +1,14 @@
 # Redundant for clarity
 export ZDOTDIR=$HOME/.config/zsh/
 
+# PATH priority for brew
+export PATH=/usr/local/bin/brew:$PATH
+
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+    autoload -U +X compinit && compinit
+fi
+
 # Path modifications
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin

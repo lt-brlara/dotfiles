@@ -1,18 +1,4 @@
-# export ZDOTDIR=$HOME/.config/zsh
-export PATH=/usr/local/bin/brew:$PATH
 
-if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-    autoload -U +X compinit && compinit
-fi
-
-export KEYID=0x82BA88A402D9EF28
-
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpg-connect-agent updatestartuptty /bye > /dev/null
-
-export PATH="/usr/local/sbin:$PATH"
 # ZSH opts
 unsetopt BEEP
 
@@ -36,6 +22,3 @@ zstyle ':completion:*' completer _extensions _complete _approximate
 zmodload zsh/complist
 
 eval "$(direnv hook zsh)"
-
-export PATH=/opt/homebrew/bin:$PATH
-
