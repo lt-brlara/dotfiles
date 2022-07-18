@@ -19,6 +19,8 @@ export PATH=/opt/homebrew/bin:$PATH
 export PATH=/usr/local/bin/brew:$PATH
 export PYENV_ROOT="$HOME/.pyenv"
 
+export EDITOR=nvim
+
 # GPG
 
 export KEYID=0x82BA88A402D9EF28
