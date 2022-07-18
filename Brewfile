@@ -82,6 +82,10 @@ cask 'visual-studio'
 ## Collab
 brew 'glab'
 brew 'gh'
+brew 'task'
+
+### Task dependencies
+brew 'html-xml-utils'
 
 ## Java
 tap 'adoptopenjdk/openjdk'
