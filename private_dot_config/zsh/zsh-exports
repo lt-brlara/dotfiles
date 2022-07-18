@@ -50,3 +50,6 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Azure CLI disable telemetry
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# Obsidian
+export OBSIDIAN_DIR=$HOME/Documents/Obsidian
