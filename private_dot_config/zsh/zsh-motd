@@ -1,0 +1,10 @@
+
+motd_components=(
+ "Inbox: $(task in)"
+)
+
+function print_motd() {
+  echo ${(j: :)motd_components}
+}
+
+print_motd

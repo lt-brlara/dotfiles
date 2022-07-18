@@ -6,5 +6,7 @@ zsh_add_file "zsh-aliases"
 zsh_add_file "zsh-history"
 zsh_add_file "zsh-options"
 zsh_add_file "zsh-plugins"
+zsh_add_file "zsh-task"
+zsh_add_file "zsh-motd"
 
 eval "$(direnv hook zsh)"
