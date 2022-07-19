@@ -1,10 +1,14 @@
 
 motd_components=(
- "Inbox: $(task in)"
+  "🌦  Context $(task _get rc.context)"
+  "\n📥 Inbox: $(task in)\n"
+  "\n▶️  Next: $(task next)"
 )
 
-function print_motd() {
+function motd() {
+  sync_tasks
+  clear
   echo ${(j: :)motd_components}
 }
 
-print_motd
+motd
