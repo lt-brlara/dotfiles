@@ -6,7 +6,7 @@ export PATH=/usr/local/bin/brew:$PATH
 
 if type brew &>/dev/null; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-    autoload -U +X compinit && compinit
+    autoload -Uz compinit && compinit
 fi
 
 # Path modifications
