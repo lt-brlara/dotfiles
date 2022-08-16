@@ -35,8 +35,7 @@ taskd.ca          = ~/.config/task/ca.cert.pem
 taskd.key         = ~/.config/task/benjamin_lara.key.pem
 taskd.certificate = ~/.config/task/benjamin_lara.cert.pem
 
-taskd.credentials = Public/Benjamin Lara/f0de434e-f330-4fe1-9ff7-c82368729c40
-
+taskd.credentials = Main/Benjamin Lara/fc67ec1b-ee59-401e-b8ac-efd94cdb8f3a
 taskd.server = 192.168.118.68:53589
 
 taskd.trust = ignore hostname
