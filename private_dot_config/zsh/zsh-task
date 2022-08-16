@@ -22,6 +22,9 @@ function read_and_review() {
     task "$id" annotate "$link"
 }
 
+function get_task_context() {
+  task _get rc.context
+}
 
 alias in='task add +in'
 alias tick=tickle
