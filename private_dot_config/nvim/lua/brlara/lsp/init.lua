@@ -5,3 +5,4 @@ end
 
 require("brlara.lsp.lsp-installer")
 require("brlara.lsp.handlers").setup()
+require("brlara.lsp.null-ls")
