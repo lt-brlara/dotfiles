@@ -86,6 +86,7 @@ return packer.startup(function(use)
   -- LSP Start HERE
   use {'neovim/nvim-lspconfig'}
   use {'williamboman/nvim-lsp-installer'}
+  use {'jose-elias-alvarez/null-ls.nvim'}
 
   -- Testing
   use {'vim-test/vim-test'}
