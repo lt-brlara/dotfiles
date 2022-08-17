@@ -7,5 +7,5 @@ require("brlara.cmp")
 require("brlara.lsp")
 require("brlara.telescope")
 require("brlara.treesitter")
-
+require("brlara.autocmd")
 
