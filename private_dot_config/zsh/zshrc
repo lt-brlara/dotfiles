@@ -8,5 +8,6 @@ zsh_add_file "zsh-options"
 zsh_add_file "zsh-plugins"
 zsh_add_file "zsh-task"
 zsh_add_file "zsh-motd"
+zsh_add_file "zsh-keybinds"
 
 eval "$(direnv hook zsh)"
