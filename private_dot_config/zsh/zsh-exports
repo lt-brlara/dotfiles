@@ -1,5 +1,10 @@
+# XDG
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CACHE_HOME=$HOME/.cache
+
 # Redundant for clarity
-export ZDOTDIR=$HOME/.config/zsh/
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh/
 
 # PATH priority for brew
 export PATH=/usr/local/bin/brew:$PATH
@@ -39,7 +44,7 @@ export PATH=$HOME/.cargo/bin:$PATH
 export VIM_CONFIG=$HOME/.vimrc
 
 # nvim config
-export NVIM_CONFIG=$HOME/.config/nvim/
+export NVIM_CONFIG=$XDG_CONFIG_HOME/nvim/
 
 # GPG Agent Forwarding
 export GPG_TTY=$TTY
@@ -53,3 +58,12 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # Obsidian
 export OBSIDIAN_DIR=$HOME/Documents/Obsidian
+
+# NPM config
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
+
+# GnuPG home
+export GNUPGHOME=$XDG_DATA_HOME/gnupg
+
+# Minikube home
+export MINIKUBE_HOME=$XDG_DATA_HOME/minikube
