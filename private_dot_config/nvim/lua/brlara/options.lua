@@ -14,6 +14,8 @@ local options = {
 vim.highlight.create("NormalFloat", { guibg = "None", guifg = "None" }, false)
 vim.highlight.create("FloatBorder", { guibg = "None" }, false)
 
+vim.g.python_recommended_style = 0
+
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
