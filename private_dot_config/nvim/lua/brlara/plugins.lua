@@ -47,7 +47,7 @@ return packer.startup(function(use)
 
   -- Colorscheme
   use {'olimorris/onedarkpro.nvim'}
-
+  use {'morhetz/gruvbox'}
   -- Fugitive
   use {'tpope/vim-fugitive'}
 
