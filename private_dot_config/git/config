@@ -1,0 +1,11 @@
+[core]
+
+  editor = nvim
+  pager  = less
+  
+  excludesFile = $XDG_CONFIG_HOME/git/gitignore_global
+
+[user]
+
+  name  = Lara, Benjamin R
+  email = benjamin.lara@laratechs.com
