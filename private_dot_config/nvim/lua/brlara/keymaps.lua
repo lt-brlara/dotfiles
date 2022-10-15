@@ -21,6 +21,8 @@ keymap("n", "fb", "<cmd>Telescope buffers<cr>", opts)
 keymap("n", "fh", "<cmd>Telescope help_tags<cr>", opts)
 keymap("n", "fc", "<cmd>Telescope commands<cr>", opts)
 
+keymap("n", "<space>fb", "<cmd>Telescope file_browser<cr>", opts)
+
 -- Terminal
 
 keymap("t", "<Esc>", "<C-\\><C-n>", term_opts)
