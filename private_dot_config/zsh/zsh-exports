@@ -62,6 +62,8 @@ export OBSIDIAN_DIR=$HOME/Documents/Obsidian
 # NPM config
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 
+export PATH=$PATH:$XDG_DATA_HOME/npm/bin
+
 # GnuPG home
 export GNUPGHOME=$XDG_DATA_HOME/gnupg
 
