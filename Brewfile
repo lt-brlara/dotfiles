@@ -67,8 +67,6 @@ brew 'terraform'
 
 brew 'ansible'
 
-cask 'lens'
-
 # Development
 
 ## Base
@@ -124,7 +122,5 @@ cask 'discord'
 
 # App Store
 
-mas "Developer", id: 640199958
 mas "Slack",     id: 803453959
-mas "TickTick",  id: 966085870
 mas "Xcode",     id: 497799835
