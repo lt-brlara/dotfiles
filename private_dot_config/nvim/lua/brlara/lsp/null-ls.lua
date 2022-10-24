@@ -12,7 +12,6 @@ null_ls.setup {
   debug = true,
   sources = {
     formatting.prettier.with { extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } },
-    formatting.black.with { extra_args = { "--fast" } },
     formatting.yapf,
     formatting.stylua,
     null_ls.builtins.diagnostics.pylint.with({
