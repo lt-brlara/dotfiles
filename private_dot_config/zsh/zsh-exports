@@ -7,6 +7,7 @@ export XDG_CACHE_HOME=$HOME/.cache
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh/
 
 # PATH priority for brew
+export PATH=/opt/homebrew/bin:$PATH
 export PATH=/usr/local/bin/brew:$PATH
 
 if type brew &>/dev/null; then
