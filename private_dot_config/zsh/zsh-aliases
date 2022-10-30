@@ -19,3 +19,5 @@ alias c++='c++-11'
 # obsidian aliases
 alias j=obsidian
 
+# fully succumb to neovim
+alias vi="nvim"
