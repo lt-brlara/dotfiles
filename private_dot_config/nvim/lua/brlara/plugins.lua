@@ -95,6 +95,7 @@ return packer.startup(function(use)
   -- Golang
   use {'ray-x/go.nvim'}
   require('go').setup()
+  use {'ray-x/guihua.lua', run = 'cd lua/fzy && make'}
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then
