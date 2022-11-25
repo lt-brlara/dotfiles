@@ -86,7 +86,7 @@ brew 'task'
 brew 'html-xml-utils'
 
 ## Java
-tap 'adoptopenjdk/openjdk'
+brew 'java'
 
 ## JS
 brew 'node'
@@ -103,6 +103,9 @@ brew 'dapr/tap/dapr-cli'
 # Base Apps
 cask 'discord'
 #cask 'fig'
+
+## Lua
+brew 'luarocks'
 
 # To be implemented
 #cask google-chrome
