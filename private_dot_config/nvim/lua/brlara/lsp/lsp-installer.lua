@@ -8,7 +8,11 @@ require("mason").setup({
 	},
 })
 
-local servers = {}
+local servers = {
+	"sumneko_lua",
+	"gopls",
+	"pyright",
+}
 
 require("mason-lspconfig").setup({
 	ensure_installed = servers,
