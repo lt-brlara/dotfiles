@@ -1,3 +1,4 @@
+require("brlara.autocmd")
 require("brlara.options")
 require("brlara.keymaps")
 require("brlara.plugins")
@@ -7,5 +8,4 @@ require("brlara.cmp")
 require("brlara.lsp")
 require("brlara.telescope")
 require("brlara.treesitter")
-require("brlara.autocmd")
 
