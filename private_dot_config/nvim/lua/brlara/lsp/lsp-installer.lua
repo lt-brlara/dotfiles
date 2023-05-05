@@ -9,7 +9,7 @@ require("mason").setup({
 })
 
 local servers = {
-	"sumneko_lua",
+	"lua_ls",
 	"gopls",
 	"pyright",
 }
