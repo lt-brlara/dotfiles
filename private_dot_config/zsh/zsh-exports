@@ -79,3 +79,10 @@ export MINIKUBE_HOME=$XDG_DATA_HOME/minikube
 
 # Zsh-z settings
 ZSHZ_EXCLUDE_DIRS=( /var /usr /etc )
+
+# kubectl autocompletion
+command -v fzf >/dev/null 2>&1 && { 
+	source <(kubectl completion zsh | sed 's#${requestComp} 2>/dev/null#${requestComp} 2>/dev/null | head -n -1 | fzf  --multi=0 #g')
+}
+
+

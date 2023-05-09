@@ -10,4 +10,8 @@ zsh_add_file "zsh-task"
 zsh_add_file "zsh-motd"
 zsh_add_file "zsh-keybinds"
 
+command -v fzf >/dev/null 2>&1 && { 
+	source <(kubectl completion zsh | sed 's#${requestComp} 2>/dev/null#${requestComp} 2>/dev/null | head -n -1 | fzf  --multi=0 #g')
+}
+
 eval "$(direnv hook zsh)"
