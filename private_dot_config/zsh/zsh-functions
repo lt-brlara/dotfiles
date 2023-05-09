@@ -51,54 +51,15 @@ _python_argcomplete() {
     fi
 }
 
-function kubectl() {
-    if ! type __start_kubectl >/dev/null 2>&1; then
-        source <(command kubectl completion zsh)
-    fi
-    command kubectl "$@"
+function quick_change_directory {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
 }
 
-function peco_change_directory {
-  local selected_dir=$(
-    (
-      echo $HOME/.config
-      ghq list -p
-      z | awk '{print $2}'
-    ) \
-    | awk '!a[$0]++' | peco --query "$LBUFFER" 
-  )
-  if [ -n "${selected_dir}" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
-  zle clear-screen
-}
-
-function peco_change_directory {
-  local selected_dir=$(
-    (
-      echo $HOME/.config
-      ghq list -p
-      z | awk '{print $2}'
-    ) \
-    | awk '!a[$0]++' | peco --query "$LBUFFER" 
-  )
-  if [ -n "${selected_dir}" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
-  zle clear-screen
-}
-
-function peco_select_history() {
-  local tac
-  { which gtac &> /dev/null && tac="gtac" } || \
-    { which tac &> /dev/null && tac="tac" } || \
-    tac="tail -r"
-  BUFFER=$(fc -l -n 1 | eval $tac | \
-              peco --layout=bottom-up --query "$LBUFFER")
-  CURSOR=$#BUFFER # move cursor
-  zle -R -c       # refresh
+function quick_select_history() {
+  eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
 }
 
 function fuck() {
@@ -153,9 +114,9 @@ function obsidian() {
 
 # Keybind functions
 
-zle -N peco_change_directory{,}
-bindkey ^f peco_change_directory
+zle -N quick_change_directory{,}
+bindkey ^f quick_change_directory
 
-zle -N peco_select_history{,}
-bindkey ^r peco_select_history
+zle -N quick_select_history{,}
+bindkey ^r quick_select_history
 
