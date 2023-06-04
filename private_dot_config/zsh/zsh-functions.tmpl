@@ -95,8 +95,12 @@ function pyenv() {
 
 function gcloud() {
     unfunction "$0"
+    {{ if eq .chezmoi.os "darwin" -}}
     source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
     source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+    {{ else if eq .chezmoi.os "linux" -}}
+    source "/usr/share/google-cloud-sdk/completion.zsh.inc" 
+    {{ end -}}
     command gcloud "$@"
 }
 
