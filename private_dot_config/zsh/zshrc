@@ -1,5 +1,6 @@
 source "$ZDOTDIR/zsh-functions"
 
+zsh_add_file "zsh-tmux"
 zsh_add_file "zsh-exports"
 zsh_add_file "zsh-prompt"
 zsh_add_file "zsh-aliases"
