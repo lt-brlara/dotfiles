@@ -110,6 +110,9 @@ return packer.startup(function(use)
 		lazy = false,
 	})
 
+	use({
+		"m4xshen/autoclose.nvim",
+	})
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
 	if PACKER_BOOTSTRAP then
