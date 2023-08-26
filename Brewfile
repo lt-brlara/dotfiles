@@ -80,10 +80,6 @@ cask 'visual-studio'
 ## Collab
 brew 'glab'
 brew 'gh'
-brew 'task'
-
-### Task dependencies
-brew 'html-xml-utils'
 
 ## Java
 brew 'java'
@@ -97,33 +93,8 @@ brew 'go'
 ## Rust
 brew 'rustup-init'
 
-## k8s
-brew 'dapr/tap/dapr-cli'
-
 # Base Apps
 cask 'discord'
-#cask 'fig'
 
 ## Lua
 brew 'luarocks'
-
-# To be implemented
-#cask google-chrome
-#cask iterm2
-#cask microsoft-excel # /Applications/Microsoft Excel.app
-#cask microsoft-outlook # /Applications/Microsoft Outlook.app
-#cask microsoft-powerpoint # /Applications/Microsoft PowerPoint.app
-#cask microsoft-remote-desktop # /Applications/Microsoft Remote Desktop.app
-#cask microsoft-teams # /Applications/Microsoft Teams.app
-#cask microsoft-word # /Applications/Microsoft Word.app
-#cask obsidian # /Applications/Obsidian.app
-#cask onedrive # /Applications/OneDrive.app
-#cask spark # /Applications/Spark.app
-#cask spotify # /Applications/Spotify.app
-#cask visual-studio-code # /Applications/Visual Studio Code.app
-#cask webex # /Applications/Webex.app
-
-# App Store
-
-mas "Slack",     id: 803453959
-mas "Xcode",     id: 497799835
