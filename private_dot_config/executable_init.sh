@@ -19,7 +19,9 @@ function chezmoi_get {
 }
 
 if command_exists apt;
-then sudo apt-get install build-essential procps curl file git zsh;
+then 
+  sudo apt-get update;
+  sudo apt-get install build-essential procps curl file git zsh;
 else echo "WARN: apt package-manager not found, moving on...";
 fi
 

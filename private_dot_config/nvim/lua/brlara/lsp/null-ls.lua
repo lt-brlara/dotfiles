@@ -14,6 +14,7 @@ null_ls.setup({
 		formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
 		formatting.yapf,
 		formatting.stylua,
+    formatting.gofmt,
 		null_ls.builtins.diagnostics.pylint.with({
 			diagnostics_postprocess = function(diagnostic)
 				diagnostic.code = diagnostic.message_id
