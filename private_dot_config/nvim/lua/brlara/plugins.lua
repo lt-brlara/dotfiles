@@ -42,8 +42,8 @@ packer.init({
 return packer.startup(function(use)
   -- My plugins here
   use("wbthomason/packer.nvim") -- Have packer manage itself
-  use("nvim-lua/popup.nvim")   -- An implementation of the Popup API from vim in Neovim
-  use("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
+  use("nvim-lua/popup.nvim")    -- An implementation of the Popup API from vim in Neovim
+  use("nvim-lua/plenary.nvim")  -- Useful lua functions used ny lots of plugins
 
   -- Colorscheme
   use({ "olimorris/onedarkpro.nvim", tag = "0.8.0" })
@@ -81,7 +81,7 @@ return packer.startup(function(use)
   use({ "hrsh7th/cmp-buffer" })
 
   -- snippets
-  use("L3MON4D3/LuaSnip")            --snippet engine
+  use("L3MON4D3/LuaSnip")             --snippet engine
   use("rafamadriz/friendly-snippets") -- a bunch of snippets to use
 
   -- LSP Start HERE
@@ -95,7 +95,6 @@ return packer.startup(function(use)
 
   -- Golang
   use({ "ray-x/go.nvim" })
-  require("go").setup()
   use({ "ray-x/guihua.lua", run = "cd lua/fzy && make" })
 
   --Debugging

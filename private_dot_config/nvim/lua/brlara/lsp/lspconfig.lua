@@ -1,12 +1,3 @@
-local function prequire(...)
-	local status, lib = pcall(require, ...)
-	if status then
-		return lib
-	end
-	--Library failed to load, so perhaps return `nil` or something?
-	return nil
-end
-
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local default_on_attach = function(client, bufnr)
@@ -35,10 +26,12 @@ require("mason-lspconfig").setup_handlers({
 			},
 		}
 
-		local server_specific_opts = prequire("brlara.lsp.settings." .. server_name)
+		local server_specific_opts = Prequire("brlara.lsp.settings." .. server_name)
 		if server_specific_opts then
 			server_opts = vim.tbl_deep_extend("force", server_specific_opts, server_opts)
 		end
 		require("lspconfig")[server_name].setup(server_opts)
 	end,
 })
+
+Prequire("go").setup()
