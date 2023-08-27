@@ -49,15 +49,12 @@ then echo "INFO: Grabbing dotfiles from $GITHUB_USERNAME";
 else echo "WARN: chezmoi not installed, cannot pull dotfiles from $GITHUB_USERNAME";
 fi
 
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
-git clone --depth 1 https://github.com/wbthomason/packer.nvim\
- ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' >/dev/null
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' >/dev/null
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' >/dev/null
 
-nvim --headless -c ''
-
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
-chsh -s /bin/zsh
+sudo chsh -s /bin/zsh $USER
 
 echo "INFO: Setup complete! Be sure to run 'zsh'!"

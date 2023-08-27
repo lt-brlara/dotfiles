@@ -28,6 +28,7 @@ brew 'ghq'
 brew 'direnv'
 brew 'neofetch'
 brew 'z'
+brew 'fzf'
 
 # NVIM
 tap 'neovim/neovim'
