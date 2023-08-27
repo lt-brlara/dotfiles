@@ -21,13 +21,13 @@ function chezmoi_get {
 if command_exists apt;
 then 
   sudo apt-get update;
-  sudo apt-get install build-essential procps curl file git zsh;
+  sudo apt-get install -y build-essential procps curl file git zsh;
 else echo "WARN: apt package-manager not found, moving on...";
 fi
 
 if command_exists yum;
 then sudo yum groupinstall 'Development Tools';
-sudo yum install procps-ng curl file git zsh;
+sudo yum install -y procps-ng curl file git zsh;
 else echo "WARN: yum package-manager not found, moving on..."
 fi
 
@@ -53,6 +53,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 git clone --depth 1 https://github.com/wbthomason/packer.nvim\
  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+
+nvim --headless -c ''
 
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 

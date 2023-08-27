@@ -1,6 +1,5 @@
 source "$ZDOTDIR/zsh-functions"
 
-zsh_add_file "zsh-tmux"
 zsh_add_file "zsh-exports"
 zsh_add_file "zsh-prompt"
 zsh_add_file "zsh-aliases"
@@ -16,3 +15,5 @@ command -v fzf >/dev/null 2>&1 && {
 }
 
 eval "$(direnv hook zsh)"
+
+zsh_add_file "zsh-tmux"
