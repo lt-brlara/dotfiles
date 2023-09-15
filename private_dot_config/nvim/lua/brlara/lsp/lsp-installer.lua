@@ -1,19 +1,20 @@
 require("mason").setup({
-	ui = {
-		icons = {
-			package_installed = "✓",
-			package_pending = "➜",
-			package_uninstalled = "✗",
-		},
-	},
+  ui = {
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗",
+    },
+  },
 })
 
 local servers = {
-	"lua_ls",
-	"gopls",
-	"pyright",
+  "lua_ls",
+  "gopls",
+  "pyright",
+  "terraformls"
 }
 
 require("mason-lspconfig").setup({
-	ensure_installed = servers,
+  ensure_installed = servers,
 })
