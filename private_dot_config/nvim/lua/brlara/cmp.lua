@@ -47,7 +47,7 @@ cmp.setup {
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-e>"] = cmp.mapping.abort(),
-    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
 
     ["<CR>"] = cmp.mapping(
       cmp.mapping.confirm {
@@ -88,7 +88,7 @@ cmp.setup {
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "path" },
-    { name = "buffer", keyword_length = 5 },
+    { name = "buffer",  keyword_length = 5 },
   }),
 
   snippet = {
