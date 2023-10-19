@@ -13,6 +13,10 @@ vim.g.maplocalleader = "\\"
 -- CD to current buffer path
 keymap("n", "cd", "<cmd>lcd %:h<cr>", opts)
 
+-- LSP
+
+keymap("n", "ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+
 -- Telescope
 
 keymap("n", "ff", "<cmd>Telescope find_files<cr>", opts)
