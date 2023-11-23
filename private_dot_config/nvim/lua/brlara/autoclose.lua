@@ -1,1 +1,0 @@
-Prequire("autoclose").setup()
