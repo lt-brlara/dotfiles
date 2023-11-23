@@ -1,10 +1,10 @@
 function Prequire(...)
-	local status, lib = pcall(require, ...)
-	if status then
-		return lib
-	end
-	--Library failed to load, so perhaps return `nil` or something?
-	return nil
+  local status, lib = pcall(require, ...)
+  if status then
+    return lib
+  end
+  --Library failed to load, so perhaps return `nil` or something?
+  return nil
 end
 
 require("brlara.autocmd")
@@ -18,3 +18,4 @@ require("brlara.lsp")
 require("brlara.telescope")
 require("brlara.treesitter")
 require("brlara.autoclose")
+require("brlara.autorun")
