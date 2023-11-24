@@ -28,6 +28,8 @@ local settings = {
 
 }
 
+vim.g.mapleader = "\\"
+
 for key, value in pairs(settings) do
 	vim.opt[key] = value
 end
