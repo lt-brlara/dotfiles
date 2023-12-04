@@ -26,6 +26,7 @@ local settings = {
 
   updatetime = 50,
 
+  colorcolumn = "80"
 }
 
 vim.g.mapleader = "\\"

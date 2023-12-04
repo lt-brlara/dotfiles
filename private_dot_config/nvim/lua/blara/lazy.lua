@@ -16,6 +16,10 @@ local plugins = {
 		'nvim-telescope/telescope.nvim', tag = '0.1.4',
 		dependencies = { 'nvim-lua/plenary.nvim' }
 	},
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" }
+  },
   {"olimorris/onedarkpro.nvim", tag = "0.8.0"},
   {"morhetz/gruvbox"},
 	{
@@ -41,10 +45,28 @@ local plugins = {
 	{'L3MON4D3/LuaSnip'},
 
   -- Go
-  { "ray-x/go.nvim" },
+  {
+  "ray-x/go.nvim",
+  dependencies = {  -- optional packages
+    "ray-x/guihua.lua",
+    "neovim/nvim-lspconfig",
+    "nvim-treesitter/nvim-treesitter",
+  },
+  config = function()
+    require("go").setup()
+  end,
+  event = {"CmdlineEnter"},
+  ft = {"go", 'gomod'},
+  build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
   { "ray-x/guihua.lua", build = "cd lua/fzy && make" },
 
-  {"m4xshen/autoclose.nvim"}
+  {"m4xshen/autoclose.nvim"},
+  { "nvim-lualine/lualine.nvim" },
+
+  -- Local plugins
+  { dir = "~/ghq/github.com/lt-brlara/autorun.nvim" },
+  { dir = "~/ghq/github.com/lt-brlara/game.nvim" },
 }
 
 require("lazy").setup(plugins)
