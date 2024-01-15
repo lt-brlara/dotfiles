@@ -59,8 +59,13 @@ local plugins = {
   ft = {"go", 'gomod'},
   build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   },
-  { "ray-x/guihua.lua", build = "cd lua/fzy && make" },
+  {"mfussenegger/nvim-dap"},
+  { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} },
+  {"leoluz/nvim-dap-go"},
+  {"theHamsta/nvim-dap-virtual-text"},
 
+
+  { "ray-x/guihua.lua", build = "cd lua/fzy && make" },
   {"m4xshen/autoclose.nvim"},
   { "nvim-lualine/lualine.nvim" },
 
