@@ -8,40 +8,11 @@ if not snip_status_ok then
   return
 end
 
+local icons = require("blara.icons")
+
 require("luasnip/loaders/from_vscode").lazy_load()
 
---   פּ ﯟ   some other good icons
-local kind_icons = {
-  Text = "",
-  Method = "m",
-  Function = "",
-  Constructor = "",
-  Field = "",
-  Variable = "",
-  Class = "",
-  Interface = "",
-  Module = "",
-  Property = "",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = "",
-}
--- find more here: https://www.nerdfonts.com/cheat-sheet
-
-cmp.setup {
-  mapping = {
+local mappings = {
     ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
     ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -81,27 +52,26 @@ cmp.setup {
         fallback()
       end
     end,
-  },
+  }
 
-  sources = cmp.config.sources({
+local lsp_sources = {
     { name = "nvim_lua" },
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "path" },
     { name = "buffer", keyword_length = 5 },
-  }),
+  }
 
-  snippet = {
+local snippet_behavior = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body)
     end,
-  },
+  }
 
-  formatting = {
+local format_settings = {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
-      -- Kind icons
-      vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+      vim_item.kind = string.format("%s%s", icons.kind[vim_item.kind], vim_item.kind)
       vim_item.menu = ({
         nvim_lsp = "[LSP]",
         nvim_lua = "[api]",
@@ -111,8 +81,13 @@ cmp.setup {
       })[entry.source.name]
       return vim_item
     end,
-  },
+  }
 
+cmp.setup({
+  mapping = mappings,
+  sources = lsp_sources,
+  snippet = snippet_behavior,
+  formatting = format_settings,
   experimental = {
     native_menu = false,
     ghost_text = true,
@@ -122,4 +97,4 @@ cmp.setup {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
   },
-}
+})
