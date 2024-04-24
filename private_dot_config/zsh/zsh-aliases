@@ -1,23 +1,9 @@
 # ls aliases
 
-alias ls='exa'
+alias ls='eza'
 alias lt='ls --icons'
 alias ll='lt -l'
 alias la='lt -la'
-
-# keepassxc-cli aliases
-
-alias kp='keepassxc-cli'
-
-# gcc aliases
-
-alias gcc='g++-11'
-alias cc='gcc-11'
-alias g++='g++-11'
-alias c++='c++-11'
-
-# obsidian aliases
-alias j=obsidian
 
 # fully succumb to neovim
 alias vi="nvim"

@@ -104,23 +104,12 @@ function gcloud() {
     command gcloud "$@"
 }
 
-function obsidian() {
-  
-  filename="$OBSIDIAN_DIR/notes/$(date +"%Y-%m-%d").md"
-  if [[ -f $filename ]]; then
-    echo "\n$(date +"%Y-%m-%d@%T")\n\n" >> "$filename"
-    $EDITOR "$filename" 
-  else
-    echo "$(date +"%Y-%m-%d@%T")\n\n" > "$filename"
-    $EDITOR "$filename"
-  fi
-}
-
 # Keybind functions
 
 zle -N quick_change_directory{,}
-bindkey ^f quick_change_directory
+#bindkey ^f quick_change_directory
+
+bindkey -s ^f "tmux-sessionizer\n"
 
 zle -N quick_select_history{,}
 bindkey ^r quick_select_history
-

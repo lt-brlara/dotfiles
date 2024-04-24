@@ -9,7 +9,13 @@ telescope.setup({
     prompt_prefix = icons.ui.Telescope .. " ",
     selection_caret = "󰓥 ",
     path_display = { "smart" },
-  }
+    file_ignore_patterns = { "^.git/" },
+  },
+  pickers = {
+    find_files = {
+      hidden = true
+    }
+  },
 })
 
 telescope.load_extension "file_browser"

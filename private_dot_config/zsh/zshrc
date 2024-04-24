@@ -1,19 +1,13 @@
 source "$ZDOTDIR/zsh-functions"
 
+zsh_add_file "zsh-tmux"
 zsh_add_file "zsh-exports"
 zsh_add_file "zsh-prompt"
 zsh_add_file "zsh-aliases"
 zsh_add_file "zsh-history"
 zsh_add_file "zsh-options"
 zsh_add_file "zsh-plugins"
-zsh_add_file "zsh-task"
-zsh_add_file "zsh-motd"
-zsh_add_file "zsh-keybinds"
-
-command -v fzf >/dev/null 2>&1 && { 
-	source <(kubectl completion zsh | sed 's#${requestComp} 2>/dev/null#${requestComp} 2>/dev/null | head -n -1 | fzf  --multi=0 #g')
-}
+zsh_add_file "zsh-keymaps"
 
 eval "$(direnv hook zsh)"
 
-zsh_add_file "zsh-tmux"

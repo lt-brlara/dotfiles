@@ -12,6 +12,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
+  {
+    "startup-nvim/startup.nvim",
+    dependencies = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"},
+  },
 	{
 		'nvim-telescope/telescope.nvim', tag = '0.1.4',
 		dependencies = { 'nvim-lua/plenary.nvim' }
@@ -60,7 +64,7 @@ local plugins = {
   build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   },
   {"mfussenegger/nvim-dap"},
-  { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} },
+  { "rcarriga/nvim-dap-ui", dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"} },
   {"leoluz/nvim-dap-go"},
   {"theHamsta/nvim-dap-virtual-text"},
 
