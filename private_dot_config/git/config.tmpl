@@ -9,7 +9,12 @@
 
   name  = Lara, Benjamin R
   email = {{ .email | quote }}
+  signingkey = {{ .gpgKeyID | quote }}
  
+[commit]
+  
+  gpgsign = true
+
 [init]
 
 	defaultBranch = main

@@ -26,6 +26,8 @@ keymap("n", "fb", "<cmd>Telescope buffers<cr>", opts)
 keymap("n", "fh", "<cmd>Telescope help_tags<cr>", opts)
 keymap("n", "fc", "<cmd>Telescope commands<cr>", opts)
 keymap("n", "<space>fb", "<cmd>Telescope file_browser<cr>", opts)
+keymap("n", "fnc", "<cmd>Telescope lsp_document_symbols<cr>", opts)
+keymap("n", "<space>fnc", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", opts)
 
 vim.keymap.set('n', '<leader>pf', builtin.git_files, {})
 vim.keymap.set('n', '<leader>ps', function()

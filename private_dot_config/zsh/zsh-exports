@@ -32,12 +32,6 @@ export PATH=/home/linuxbrew/.linuxbrew/lib/ruby/gems/3.1.0/bin:$PATH
 export PATH=$XDG_DATA_HOME/gem/ruby/3.1.0/bin:$PATH
 export PYENV_ROOT="$HOME/.pyenv"
 
-# GPG
-
-export KEYID=0x82BA88A402D9EF28
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-
 # Go
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
@@ -52,10 +46,6 @@ export VIM_CONFIG=$HOME/.vimrc
 
 # nvim config
 export NVIM_CONFIG=$XDG_CONFIG_HOME/nvim/
-
-# GPG Agent Forwarding
-export GPG_TTY=$TTY
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 # GKE v1.25+ auth plugin
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
