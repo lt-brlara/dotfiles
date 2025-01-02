@@ -23,17 +23,16 @@ then
 fi
 
 # Path modifications
-export PATH=$PATH:$HOME/.local/bin/maelstrom
 export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:/home/linuxbrew/.linuxbrew/bin
-export PATH=$PATH:/home/blara/.local/bin
 export PATH=/usr/local/sbin:$PATH
-export PATH=/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:$PATH
 export PATH=/opt/homebrew/bin:$PATH
 export PATH=/usr/local/bin/brew:$PATH
 export PATH=/opt/nvim/bin:$PATH
-export PATH=/home/linuxbrew/.linuxbrew/lib/ruby/gems/3.1.0/bin:$PATH
-export PATH=$XDG_DATA_HOME/gem/ruby/3.1.0/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+
+# Rust
+export PATH=$HOME/.cargo/bin:$PATH
+
 export PYENV_ROOT="$HOME/.pyenv"
 
 # Go
@@ -41,9 +40,6 @@ export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 export GO=$GOPATH/src/github.com/brlara
 export PATH=$PATH:$GOPATH/bin
-
-# Rust
-export PATH=$HOME/.cargo/bin:$PATH
 
 # vim config
 export VIM_CONFIG=$HOME/.vimrc

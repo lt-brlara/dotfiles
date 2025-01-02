@@ -109,11 +109,9 @@ local plugins = {
       },
     },
   },
-  { "andweeb/presence.nvim" },
-
   {
     "ej-shafran/compile-mode.nvim",
-    tag = "latest",
+    tag = "v5.4.0",
     dependencies = {
       "nvim-lua/plenary.nvim",
       { "m00qek/baleia.nvim", tag = "v1.3.0" },
@@ -125,10 +123,6 @@ local plugins = {
       }
     end
   },
-
-  -- Local plugins
-  { dir = "~/ghq/github.com/lt-brlara/autorun.nvim" },
-  { dir = "~/ghq/github.com/lt-brlara/game.nvim" },
 }
 
 require("lazy").setup(plugins)
