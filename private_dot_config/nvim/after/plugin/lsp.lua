@@ -1,4 +1,6 @@
 local lsp = require('lsp-zero')
+local keymap = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
 
 lsp.preset('recommended')
 
@@ -52,3 +54,5 @@ require("lspconfig").lua_ls.setup {
     },
   },
 }
+
+keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
