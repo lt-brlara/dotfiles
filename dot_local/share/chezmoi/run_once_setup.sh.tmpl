@@ -12,6 +12,9 @@ logerror() { echo "[ERROR] $1"; }
 main() {
   log "Starting first-time setup..."
   cd $HOME
+
+  echo "🔐 Requesting sudo access..."
+  sudo -v
   
   install_core_packages
   config_shell
@@ -28,11 +31,11 @@ install_core_packages() {
   log "Installing core packages..."
   {{ if eq .chezmoi.os "linux" -}}
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
-  sudo bash -c 'apt-get update > /dev/null 2>&1'
+  sudo apt-get -qq update < /dev/null > /dev/null 2>&1
 
   {{ range .packages.linux.apt -}}
   log "📦 Installing {{ . | quote }}..."
-  sudo bash -c 'apt-get install {{ . | quote }} -y >/dev/null 2>&1'
+  silent_install_package {{ . | quote }}
   {{ end -}}
   {{ end -}}
   {{ end -}}
@@ -48,7 +51,7 @@ install_eza() {
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
   sudo mkdir -p /etc/apt/keyrings
   wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-  echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+  echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list > /dev/null 2>&1
   sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
   sudo bash -c 'apt update > /dev/null 2>&1'
   sudo bash -c 'apt install -y eza > /dev/null 2>&1'
@@ -63,11 +66,11 @@ build_and_install_nvim() {
   
   log "🔍 Checking build dependencies..."
   
-  sudo apt update
+  sudo bash -c 'apt update > /dev/null 2>&1'
   sudo bash -c 'apt install -y \
-    ninja-build gettext cmake unzip curl \
-    build-essential git libtool libtool-bin \
-    autoconf automake pkg-config > /dev/null 2>&1'
+  ninja-build gettext cmake unzip curl \
+  build-essential git libtool libtool-bin \
+  autoconf automake pkg-config' > /dev/null 2>&1
   
   log "📁 Ensuring build directory exists..."
   mkdir -p "$HOME/ghq/github.com/neovim"
@@ -92,6 +95,10 @@ build_and_install_nvim() {
   nvim --version | head -n 1
   
   log "neovim installed!"
+}
+
+silent_install_package() {
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install "$1" -y -qq < /dev/null > /dev/null 2>&1
 }
 
 main
