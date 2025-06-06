@@ -108,7 +108,7 @@ silent_install_package() {
 }
 
 silent_run() {
-  "$@" >>"$LOGFILE" 2>&1 > /dev/null
+  "$@" >>"$LOGFILE" 2>&1 </dev/null
 }
 
 main
