@@ -7,22 +7,12 @@ packages:
   
   linux:
     apt:
+      - zsh
+      - direnv
+      - gpg
+      - wget
       - git
       - tmux
-      - gcc
       - vim
       - ripgrep
       - fzf
-      - gzip
-      - python3
-      - openjdk-17-jdk
-      - graphviz
-      - gnuplot
-      # Build tools
-      - cmake
-      - pkg-config
-      - libxkbcommon-dev
-      - libfreetype6-dev
-      - libfontconfig1-dev
-      - libxcb-xfixes0-dev
-      # End build tools
