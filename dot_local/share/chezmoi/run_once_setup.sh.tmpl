@@ -13,24 +13,25 @@ logwarn()  { printf "[WARN] %s\n" "$1" | tee -a "$LOGFILE"; }
 logerror() { printf "[ERROR] %s\n" "$1" | tee -a "$LOGFILE" >&2; }
 
 main() {
+  log "🛫 Starting first-time setup..."
   cd "$HOME"
+
   log "🔐 Requesting sudo access..."
   sudo -v
 
-  log "Starting first-time setup..."
   install_core_packages
   config_shell
   build_and_install_nvim
 }
 
 config_shell() {
-  log "Configuring shell..."
+  log "🐚 Configuring shell..."
   sudo chsh blara -s "$(command -v zsh)"
-  log "Shell successfully configured!"
+  log "✅ Shell successfully configured!"
 }
 
 install_core_packages() {
-  log "Installing core packages..."
+  log "📦 Installing core packages..."
   {{ if eq .chezmoi.os "linux" -}}
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
   silent_run sudo apt-get update -qq
@@ -41,11 +42,11 @@ install_core_packages() {
   {{ end -}}
 
   install_eza
-  log "Core packages installed!"
+  log "✅ Core packages installed!"
 }
 
 install_eza() {
-  log "📦 Installing eza"
+  log "📦 Installing eza..."
   {{ if eq .chezmoi.os "linux" -}}
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
   silent_run sudo mkdir -p /etc/apt/keyrings
@@ -64,7 +65,7 @@ install_eza() {
 }
 
 build_and_install_nvim() {
-  log "Installing Neovim"
+  log "🧠 Installing Neovim"
   NEOVIM_DIR="$HOME/ghq/github.com/neovim/neovim"
 
   log "🔍 Checking build dependencies..."
@@ -79,7 +80,7 @@ build_and_install_nvim() {
 
   if [ ! -d "$NEOVIM_DIR" ]; then
     log "📥 Cloning Neovim repo..."
-    git clone https://github.com/neovim/neovim.git "$NEOVIM_DIR" > /dev/null 2>&1
+    git clone --depth 1 https://github.com/neovim/neovim.git "$NEOVIM_DIR" > /dev/null 2>&1
   else
     logwarn "📦 Neovim source already exists, updating..."
     git -C "$NEOVIM_DIR" pull > /dev/null 2>&1
@@ -94,7 +95,7 @@ build_and_install_nvim() {
   sudo make install > /dev/null 2>&1
 
   log "✅ Neovim installed to: $(command -v nvim)"
-  nvim --version | head -n 1 >> "$LOGFILE"
+  log "🛠️ Neovim version: $(nvim --version | head -n 1)"
   log "Neovim installed!"
 }
 
