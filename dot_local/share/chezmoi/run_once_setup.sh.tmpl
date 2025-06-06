@@ -22,6 +22,7 @@ main() {
 
   install_core_packages
   config_shell
+  install_go
   build_and_install_nvim
 }
 
@@ -63,6 +64,29 @@ install_eza() {
   silent_install_package eza
   {{ end -}}
   {{ end -}}
+}
+
+install_go() {
+  GO_VERSION="1.24.4"
+  GO_ARCHIVE="go${GO_VERSION}.linux-amd64.tar.gz"
+
+  if command -v go >/dev/null 2>&1; then
+    current_version=$(go version | awk '{print $3}' | sed 's/go//')
+    if [ "$current_version" = "$GO_VERSION" ]; then
+      log "✅ Go $GO_VERSION already installed"
+      return
+    else
+      logwarn "🔄 Updating Go to $GO_VERSION (current: $current_version)"
+    fi
+  else
+    log "📥 Installing Go $GO_VERSION..."
+  fi
+
+  wget -q "https://go.dev/dl/$GO_ARCHIVE" -O "/tmp/$GO_ARCHIVE"
+  silent_run sudo rm -rf /usr/local/go
+  silent_run sudo tar -C /usr/local -xzf "/tmp/$GO_ARCHIVE"
+  rm -f "/tmp/$GO_ARCHIVE"
+  log "✅ Go installed to: /usr/local/go/bin/go"
 }
 
 build_and_install_nvim() {
