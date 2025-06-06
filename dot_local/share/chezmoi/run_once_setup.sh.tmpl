@@ -4,10 +4,14 @@
 
 set -e
 
+LOGFILE="$HOME/setup.log"
+mkdir -p "$(dirname "$LOGFILE")"
+: > "$LOGFILE"  # clear previous log
+
 # Log functions
-log()      { echo "[INFO] $1";  }
-logwarn()  { echo "[WARN] $1";  }
-logerror() { echo "[ERROR] $1"; }
+log()      { printf "[INFO] %s\n" "$1" | tee -a "$LOGFILE"; }
+logwarn()  { printf "[WARN] %s\n" "$1" | tee -a "$LOGFILE"; }
+logerror() { printf "[ERROR] %s\n" "$1" | tee -a "$LOGFILE" >&2; }
 
 main() {
   log "Starting first-time setup..."
@@ -31,17 +35,14 @@ install_core_packages() {
   log "Installing core packages..."
   {{ if eq .chezmoi.os "linux" -}}
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
-  sudo apt-get -qq update < /dev/null > /dev/null 2>&1
-
+  silent_run sudo apt-get update -qq
   {{ range .packages.linux.apt -}}
-  log "📦 Installing {{ . | quote }}..."
   silent_install_package {{ . | quote }}
   {{ end -}}
   {{ end -}}
   {{ end -}}
 
   install_eza
-
   log "Core packages installed!"
 }
 
@@ -49,12 +50,17 @@ install_eza() {
   log "📦 Installing eza"
   {{ if eq .chezmoi.os "linux" -}}
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
-  sudo mkdir -p /etc/apt/keyrings
-  wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-  echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list > /dev/null 2>&1
-  sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-  sudo bash -c 'apt update > /dev/null 2>&1'
-  sudo bash -c 'apt install -y eza > /dev/null 2>&1'
+  silent_run sudo mkdir -p /etc/apt/keyrings
+
+  wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc |
+    sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+
+  echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" |
+    sudo tee /etc/apt/sources.list.d/gierens.list > /dev/null 2>&1
+
+  silent_run sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+  silent_run sudo apt-get update -qq
+  silent_install_package eza
   {{ end -}}
   {{ end -}}
 }
@@ -98,7 +104,14 @@ build_and_install_nvim() {
 }
 
 silent_install_package() {
-  sudo DEBIAN_FRONTEND=noninteractive apt-get install "$1" -y -qq < /dev/null > /dev/null 2>&1
+  log "📦 Installing $1..."
+  if ! silent_run sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "$1"; then
+    logerror "❌ Failed to install $1"
+  fi
+}
+
+silent_run() {
+  "$@" < /dev/null > /dev/null 2>&1
 }
 
 main
