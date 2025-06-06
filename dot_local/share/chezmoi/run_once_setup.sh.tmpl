@@ -9,8 +9,8 @@ mkdir -p "$(dirname "$LOGFILE")"
 
 # Log functions
 log()      { printf "[INFO] %s\n" "$1" | tee -a "$LOGFILE"; }
-logwarn()  { printf "[WARN] %s\n" "$1" | tee -a "$LOGFILE"; }
-logerror() { printf "[ERROR] %s\n" "$1" | tee -a "$LOGFILE" >&2; }
+logwarn()  { printf "[\e[33mWARN\e[0m] %s\n" "$1" | tee -a "$LOGFILE"; }
+logerror() { printf "[\e[31mERROR\e[0m] %s\n" "$1" | tee -a "$LOGFILE" >&2; }
 
 main() {
   log "🛫 Starting first-time setup..."
