@@ -31,10 +31,7 @@ local plugins = {
 		name = "catppuccin",
 		priority = 1000
 	},
-	{
-		'nvim-treesitter/nvim-treesitter',
-		build = vim.cmd.TSUpdate
-	},
+  {"nvim-treesitter/nvim-treesitter", branch = 'master', lazy = false, build = ":TSUpdate"},
 	{'nvim-treesitter/playground'},
 	{'mbbill/undotree'},
 	{'tpope/vim-fugitive'},
