@@ -28,9 +28,11 @@ install_core_packages() {
   log "Installing core packages..."
   {{ if eq .chezmoi.os "linux" -}}
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
-  sudo apt-get update > /dev/null 2>&1
+  sudo bash -c 'apt-get update > /dev/null 2>&1'
+
   {{ range .packages.linux.apt -}}
-  sudo apt-get install {{ . | quote }} -y >/dev/null 2>&1
+  log "📦 Installing {{ . | quote }}..."
+  sudo bash -c 'apt-get install {{ . | quote }} -y >/dev/null 2>&1'
   {{ end -}}
   {{ end -}}
   {{ end -}}
@@ -41,14 +43,15 @@ install_core_packages() {
 }
 
 install_eza() {
+  log "📦 Installing eza"
   {{ if eq .chezmoi.os "linux" -}}
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
   sudo mkdir -p /etc/apt/keyrings
   wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
   echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
   sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-  sudo apt update > /dev/null 2>&1
-  sudo apt install -y eza > /dev/null 2>&1
+  sudo bash -c 'apt update > /dev/null 2>&1'
+  sudo bash -c 'apt install -y eza > /dev/null 2>&1'
   {{ end -}}
   {{ end -}}
 }
@@ -61,20 +64,20 @@ build_and_install_nvim() {
   log "🔍 Checking build dependencies..."
   
   sudo apt update
-  sudo apt install -y \
+  sudo bash -c 'apt install -y \
     ninja-build gettext cmake unzip curl \
     build-essential git libtool libtool-bin \
-    autoconf automake pkg-config
+    autoconf automake pkg-config > /dev/null 2>&1'
   
   log "📁 Ensuring build directory exists..."
   mkdir -p "$HOME/ghq/github.com/neovim"
   
   if [ ! -d "$NEOVIM_DIR" ]; then
     log "📥 Cloning Neovim repo..."
-    git clone https://github.com/neovim/neovim.git "$NEOVIM_DIR"
+    git clone https://github.com/neovim/neovim.git "$NEOVIM_DIR" > /dev/null 2>&1
   else
     warn "📦 Neovim source already exists, updating..."
-    git -C "$NEOVIM_DIR" pull
+    git -C "$NEOVIM_DIR" pull > /dev/null 2>&1
   fi
   
   cd "$NEOVIM_DIR"
