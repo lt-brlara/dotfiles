@@ -47,8 +47,8 @@ install_eza() {
   wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
   echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
   sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-  sudo apt update
-  sudo apt install -y eza
+  sudo apt update > /dev/null 2>&1
+  sudo apt install -y eza > /dev/null 2>&1
   {{ end -}}
   {{ end -}}
 }
@@ -80,10 +80,10 @@ build_and_install_nvim() {
   cd "$NEOVIM_DIR"
   
   log "🛠️ Building Neovim..."
-  make CMAKE_BUILD_TYPE=Release 2>&1
+  make CMAKE_BUILD_TYPE=Release > /dev/null 2>&1
   
   log "🚀 Installing Neovim..."
-  sudo make install 2>&1
+  sudo make install > /dev/null 2>&1
   
   log "✅ Neovim installed to: $(command -v nvim)"
   nvim --version | head -n 1
