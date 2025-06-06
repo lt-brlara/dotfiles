@@ -18,6 +18,7 @@ main() {
 
   log "🔐 Requesting sudo access..."
   sudo -v
+  log "✅ Access granted!"
 
   install_core_packages
   config_shell
@@ -107,7 +108,7 @@ silent_install_package() {
 }
 
 silent_run() {
-  "$@" < /dev/null > /dev/null 2>&1
+  "$@" >>"$LOGFILE" 2>&1
 }
 
 main
