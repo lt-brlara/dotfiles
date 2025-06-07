@@ -76,7 +76,7 @@ install_ghq() {
 
   {{ if eq .chezmoi.os "linux" -}}
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
-  if ! silent_install_package ghq; then
+  if ! command -v ghq >/dev/null 2>&1; then
     logwarn "ghq package not found, building from source..."
     if ! command -v go >/dev/null 2>&1; then
       install_go
