@@ -23,6 +23,7 @@ main() {
   install_core_packages
   config_shell
   install_go
+  install_ghq
   build_and_install_nvim
 }
 
@@ -64,6 +65,29 @@ install_eza() {
   silent_install_package eza
   {{ end -}}
   {{ end -}}
+}
+
+install_ghq() {
+  log "📦 Installing ghq..."
+  if command -v ghq >/dev/null 2>&1; then
+    logwarn "📦 ghq already installed, skipping..."
+    return
+  fi
+
+  {{ if eq .chezmoi.os "linux" -}}
+  {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
+  if ! silent_install_package ghq; then
+    logwarn "ghq package not found, building from source..."
+    if ! command -v go >/dev/null 2>&1; then
+      install_go
+    fi
+    GO111MODULE=on go install github.com/x-motemen/ghq@latest >>"$LOGFILE" 2>&1
+    sudo install -m 755 "$HOME/go/bin/ghq" /usr/local/bin/ghq
+  fi
+  {{ end -}}
+  {{ end -}}
+
+  log "✅ ghq installed!"
 }
 
 install_go() {
