@@ -48,6 +48,7 @@ install_core_packages() {
 }
 
 install_eza() {
+  log "🛠️ Building eza..."
   silent_run cargo install eza
   log "📂 eza installed!"
 }
@@ -77,6 +78,11 @@ install_ghq() {
 install_go() {
   GO_VERSION="1.24.4"
   GO_ARCHIVE="go${GO_VERSION}.linux-amd64.tar.gz"
+  GO_INSTALL_PATH="/usr/local/bin"
+
+  export GOPATH="$XDG_DATA_HOME"/go
+  export GOROOT=/usr/local/go
+  export GOMODCACHE="$XDG_CACHE_HOME"/go/mod
 
   if command -v go >/dev/null 2>&1; then
     current_version=$(go version | awk '{print $3}' | sed 's/go//')
@@ -91,22 +97,21 @@ install_go() {
   fi
 
   wget -q "https://go.dev/dl/$GO_ARCHIVE" -O "/tmp/$GO_ARCHIVE"
-  silent_run sudo rm -rf /usr/local/go
+  silent_run sudo rm -rf $GOROOT
   silent_run sudo tar -C /usr/local -xzf "/tmp/$GO_ARCHIVE"
   rm -f "/tmp/$GO_ARCHIVE"
-  log "✨ Go installed to: /usr/local/go/bin/go"
+  silent_run sudo ln $GOROOT/bin/go $GO_INSTALL_PATH/go
+  log "✨ Go installed to: $GOROOT/bin/go"
 }
 
 build_and_install_nvim() {
   NVIM_VERSION="v0.11.2"
   NEOVIM_DIR="$HOME/ghq/github.com/neovim/neovim"
 
-  log "🧠 Installing Neovim"
-
   if command -v nvim >/dev/null 2>&1; then
     current_version=$(nvim --version | head -n 1 | awk '{print $2}')
     if [ "$current_version" = "$NVIM_VERSION" ]; then
-      log "✅ neovim $NVIM_VERSION already installed"
+      logwarn "📦 neovim $NVIM_VERSION already installed, skipping..."
       return
     else
       logwarn "🔄 Updating neovim to $NVIM_VERSION (current: $current_version)"
@@ -116,8 +121,8 @@ build_and_install_nvim() {
   fi
 
   log "🔍 Checking build dependencies..."
-  silent_install_package ninja-build gettext cmake unzip curl \
-    build-essential git libtool libtool-bin \
+  silent_install_package ninja-build gettext cmake \
+    unzip curl build-essential git libtool libtool-bin \
     autoconf automake pkg-config
 
   log "📁 Ensuring build directory exists..."
@@ -128,7 +133,7 @@ build_and_install_nvim() {
     silent_run git clone -b v0.11.2 --single-branch --depth 1 https://github.com/neovim/neovim.git "$NEOVIM_DIR"
   else
     logwarn "📦 Neovim source already exists, updating..."
-    silent_run git -C "$NEOVIM_DIR" fetch --all --tags --prune --depth=1
+    silent_run git -C "$NEOVIM_DIR" fetch --tags --depth=1
     silent_run git -C "$NEOVIM_DIR" checkout -f $NVIM_VERSION
   fi
 
@@ -150,7 +155,7 @@ build_and_install_tmux() {
   if command -v tmux >/dev/null 2>&1; then
     current_version=$(tmux -V | awk '{print $2}')
     if [ "$current_version" = "$TMUX_VERSION" ]; then
-      log "✅ tmux $TMUX_VERSION already installed"
+      logwarn "📦 tmux $TMUX_VERSION already installed, skipping..."
       return
     else
       logwarn "🔄 Updating tmux to $TMUX_VERSION (current: $current_version)"
@@ -182,7 +187,7 @@ build_and_install_tmux() {
 
   log "🛠️ Building tmux..."
   silent_run sh autogen.sh
-  silent_run ./configure --prefix=$HOME/.local
+  silent_run ./configure --prefix=/usr/local
   silent_run make 
 
   log "🚀 Installing Neovim..."
@@ -193,33 +198,33 @@ build_and_install_tmux() {
 }
 
 install_package() {
-  for i in "$@"
+  for i in $@
   do
-    silent_install_package "$1"
-    log "📦 $1 installed!"
+    silent_install_package "$i"
+    log "📦 $i installed!"
   done
 }
 
 silent_install_package() {
-  for i in "$@"
+  for i in $@
   do
   {{ if eq .chezmoi.os "linux" -}}
 
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
-  if ! silent_run sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "$1"; then
-    logerror "❌ Failed to install $1"
+  if ! silent_run sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "$i"; then
+    logerror "❌ Failed to install $i"
   fi
   {{ end }}
 
   {{ if eq .chezmoi.osRelease.id "fedora" -}}
-  if ! silent_run sudo yum install -y "$1"; then
-    logerror "❌ Failed to install $1"
+  if ! silent_run sudo yum install -y "$i"; then
+    logerror "❌ Failed to install $i"
   fi
   {{ end }}
 
   {{ if eq .chezmoi.osRelease.id "arch" -}}
-  if ! silent_run sudo pacman -S "$1"; then
-    logerror "❌ Failed to install $1"
+  if ! silent_run sudo pacman -S "$i"; then
+    logerror "❌ Failed to install $i"
   fi
   {{ end }}
 
@@ -263,8 +268,12 @@ EOF
 }
 
 install_rust() {
-  silent_run curl https://sh.rustup.rs -sSf | sh -s -- -y
+  curl https://sh.rustup.rs -sSf > rustup-init.sh
+  chmod u+x ./rustup-init.sh
+  silent_run ./rustup-init.sh -y
   source $HOME/.cargo/env
+  rm ./rustup-init.sh
+
   log "🦀 Rust installed!"
 }
 

@@ -36,7 +36,9 @@ export PATH=$HOME/.cargo/bin:$PATH
 export PYENV_ROOT="$HOME/.pyenv"
 
 # Go
-export GOPATH=$HOME/go
+export GOPATH="$XDG_DATA_HOME"/go
+export GOROOT=/usr/local/go
+export GOMODCACHE="$XDG_CACHE_HOME"/go/mod
 export GOBIN=$GOPATH/bin
 export GO=$GOPATH/src/github.com/brlara
 export PATH=$PATH:$GOPATH/bin
