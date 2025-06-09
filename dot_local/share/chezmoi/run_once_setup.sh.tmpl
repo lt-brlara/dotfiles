@@ -2,7 +2,6 @@
 # Only runs once per machine during `chezmoi apply`
 
 set -e
-
 LOGFILE="$HOME/setup.log"
 mkdir -p "$(dirname "$LOGFILE")"
 : > "$LOGFILE"  # clear previous log
@@ -20,55 +19,40 @@ main() {
   sudo -v
   log "✅ Access granted!"
 
+  update_package_manager
   install_core_packages
+  install_rust
+  install_eza
   config_shell
   install_go
   install_ghq
   build_and_install_nvim
+  build_and_install_tmux
+  setup_wsl
+
+  log "🏁 Setup complete!"
 }
 
 config_shell() {
-  log "🐚 Configuring shell..."
   sudo chsh blara -s "$(command -v zsh)"
-  log "✅ Shell successfully configured!"
+  log "🐚 Shell successfully configured!"
 }
 
 install_core_packages() {
-  log "📦 Installing core packages..."
   {{ if eq .chezmoi.os "linux" -}}
-  {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
-  silent_run sudo apt-get update -qq
   {{ range .packages.linux.apt -}}
-  silent_install_package {{ . | quote }}
+  install_package {{ . | quote }}
   {{ end -}}
   {{ end -}}
-  {{ end -}}
-
-  install_eza
   log "✅ Core packages installed!"
 }
 
 install_eza() {
-  log "📦 Installing eza..."
-  {{ if eq .chezmoi.os "linux" -}}
-  {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
-  silent_run sudo mkdir -p /etc/apt/keyrings
-
-  wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc |
-    sudo gpg --dearmor --yes -o /etc/apt/keyrings/gierens.gpg
-
-  echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" |
-    sudo tee /etc/apt/sources.list.d/gierens.list > /dev/null 2>&1
-
-  silent_run sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-  silent_run sudo apt-get update -qq
-  silent_install_package eza
-  {{ end -}}
-  {{ end -}}
+  silent_run cargo install eza
+  log "📂 eza installed!"
 }
 
 install_ghq() {
-  log "📦 Installing ghq..."
   if command -v ghq >/dev/null 2>&1; then
     logwarn "📦 ghq already installed, skipping..."
     return
@@ -87,7 +71,7 @@ install_ghq() {
   {{ end -}}
   {{ end -}}
 
-  log "✅ ghq installed!"
+  log "📦 ghq installed!"
 }
 
 install_go() {
@@ -97,7 +81,7 @@ install_go() {
   if command -v go >/dev/null 2>&1; then
     current_version=$(go version | awk '{print $3}' | sed 's/go//')
     if [ "$current_version" = "$GO_VERSION" ]; then
-      log "✅ Go $GO_VERSION already installed"
+      logwarn "✨ Go $current_version already installed, skipping..."
       return
     else
       logwarn "🔄 Updating Go to $GO_VERSION (current: $current_version)"
@@ -110,17 +94,29 @@ install_go() {
   silent_run sudo rm -rf /usr/local/go
   silent_run sudo tar -C /usr/local -xzf "/tmp/$GO_ARCHIVE"
   rm -f "/tmp/$GO_ARCHIVE"
-  log "✅ Go installed to: /usr/local/go/bin/go"
+  log "✨ Go installed to: /usr/local/go/bin/go"
 }
 
 build_and_install_nvim() {
-  log "🧠 Installing Neovim"
+  NVIM_VERSION="v0.11.2"
   NEOVIM_DIR="$HOME/ghq/github.com/neovim/neovim"
 
+  log "🧠 Installing Neovim"
+
+  if command -v nvim >/dev/null 2>&1; then
+    current_version=$(nvim --version | head -n 1 | awk '{print $2}')
+    if [ "$current_version" = "$NVIM_VERSION" ]; then
+      log "✅ neovim $NVIM_VERSION already installed"
+      return
+    else
+      logwarn "🔄 Updating neovim to $NVIM_VERSION (current: $current_version)"
+    fi
+  else
+    log "📥 Installing neovim $NVIM_VERSION..."
+  fi
+
   log "🔍 Checking build dependencies..."
-  silent_run sudo apt-get update -qq
-  silent_run sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
-    ninja-build gettext cmake unzip curl \
+  silent_install_package ninja-build gettext cmake unzip curl \
     build-essential git libtool libtool-bin \
     autoconf automake pkg-config
 
@@ -129,34 +125,147 @@ build_and_install_nvim() {
 
   if [ ! -d "$NEOVIM_DIR" ]; then
     log "📥 Cloning Neovim repo..."
-    git clone --depth 1 https://github.com/neovim/neovim.git "$NEOVIM_DIR" > /dev/null 2>&1
+    silent_run git clone -b v0.11.2 --single-branch --depth 1 https://github.com/neovim/neovim.git "$NEOVIM_DIR"
   else
     logwarn "📦 Neovim source already exists, updating..."
-    git -C "$NEOVIM_DIR" pull > /dev/null 2>&1
+    silent_run git -C "$NEOVIM_DIR" fetch --all --tags --prune --depth=1
+    silent_run git -C "$NEOVIM_DIR" checkout -f $NVIM_VERSION
   fi
 
   cd "$NEOVIM_DIR"
 
   log "🛠️ Building Neovim..."
-  make CMAKE_BUILD_TYPE=Release > /dev/null 2>&1
+  silent_run make CMAKE_BUILD_TYPE=Release
 
   log "🚀 Installing Neovim..."
-  sudo make install > /dev/null 2>&1
+  silent_run sudo make install
 
   log "✅ Neovim installed to: $(command -v nvim)"
   log "🛠️ Neovim version: $(nvim --version | head -n 1)"
-  log "Neovim installed!"
+}
+
+build_and_install_tmux() {
+  TMUX_VERSION="3.5"
+
+  if command -v tmux >/dev/null 2>&1; then
+    current_version=$(tmux -V | awk '{print $2}')
+    if [ "$current_version" = "$TMUX_VERSION" ]; then
+      log "✅ tmux $TMUX_VERSION already installed"
+      return
+    else
+      logwarn "🔄 Updating tmux to $TMUX_VERSION (current: $current_version)"
+      silent_run sudo apt remove tmux -y
+    fi
+  else
+    log "📥 Installing tmux $TMUX_VERSION..."
+  fi
+
+  TMUX_DIR="$HOME/ghq/github.com/tmux/tmux"
+
+  log "🔍 Checking build dependencies..."
+  silent_run sudo apt-get update -qq
+  silent_install_package libevent-dev ncurses-dev build-essential \
+    bison pkg-config
+
+  log "📁 Ensuring build directory exists..."
+  mkdir -p "$(dirname "$TMUX_DIR")"
+
+  if [ ! -d "$TMUX_DIR" ]; then
+    log "📥 Cloning tmux repo..."
+    silent_run git clone -b 3.5 --single-branch --depth 1 https://github.com/tmux/tmux.git "$TMUX_DIR"
+  else
+    logwarn "📦 tmux source already exists, updating..."
+    silent_run git -C "$TMUX_DIR" pull
+  fi
+
+  cd "$TMUX_DIR"
+
+  log "🛠️ Building tmux..."
+  silent_run sh autogen.sh
+  silent_run ./configure --prefix=$HOME/.local
+  silent_run make 
+
+  log "🚀 Installing Neovim..."
+  silent_run sudo make install
+
+  log "✅ tmux installed to: $(command -v tmux)"
+  log "🛠️ tmux version: $(tmux -V)"
+}
+
+install_package() {
+  for i in "$@"
+  do
+    silent_install_package "$1"
+    log "📦 $1 installed!"
+  done
 }
 
 silent_install_package() {
-  log "📦 Installing $1..."
+  for i in "$@"
+  do
+  {{ if eq .chezmoi.os "linux" -}}
+
+  {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
   if ! silent_run sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "$1"; then
     logerror "❌ Failed to install $1"
   fi
+  {{ end }}
+
+  {{ if eq .chezmoi.osRelease.id "fedora" -}}
+  if ! silent_run sudo yum install -y "$1"; then
+    logerror "❌ Failed to install $1"
+  fi
+  {{ end }}
+
+  {{ if eq .chezmoi.osRelease.id "arch" -}}
+  if ! silent_run sudo pacman -S "$1"; then
+    logerror "❌ Failed to install $1"
+  fi
+  {{ end }}
+
+  {{ end }}
+  done
+}
+
+update_package_manager() {
+  {{ if eq .chezmoi.os "linux" -}}
+
+  {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
+  silent_run sudo DEBIAN_FRONTEND=noninteractive apt-get update -qq
+  {{ end }}
+
+  {{ if eq .chezmoi.osRelease.id "fedora" -}}
+  silent_run sudo yum update
+  {{ end }}
+
+  {{ if eq .chezmoi.osRelease.id "arch" -}}
+  silent_run sudo pacman -Syu
+  {{ end }}
+
+  {{ end }}
 }
 
 silent_run() {
   "$@" >>"$LOGFILE" 2>&1 </dev/null
+}
+
+setup_wsl() {
+  {{ if eq .chezmoi.os "linux" }}
+  {{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+  log "🖥️ Windows Subsystem for Linux detected..."
+  sudo sh -c "cat > /etc/wsl.conf" <<-EOF
+[boot]
+systemd=true
+EOF
+  log "✅ WSL configurations applied!"
+  {{ end }}
+  {{ end }}
+}
+
+install_rust() {
+  silent_run curl https://sh.rustup.rs -sSf | sh -s -- -y
+  source $HOME/.cargo/env
+  log "🦀 Rust installed!"
 }
 
 main
