@@ -66,6 +66,10 @@ install_ghq() {
     if ! command -v go >/dev/null 2>&1; then
       install_go
     fi
+    export GOPATH=$HOME/.local/share/go
+    export GOROOT=/usr/local/go
+    export GOMODCACHE=$HOME/.cache/go/mod
+
     GO111MODULE=on go install github.com/x-motemen/ghq@latest >>"$LOGFILE" 2>&1
     sudo install -m 755 "$HOME/go/bin/ghq" /usr/local/bin/ghq
   fi
@@ -80,9 +84,9 @@ install_go() {
   GO_ARCHIVE="go${GO_VERSION}.linux-amd64.tar.gz"
   GO_INSTALL_PATH="/usr/local/bin"
 
-  export GOPATH="$XDG_DATA_HOME"/go
+  export GOPATH=$HOME/.local/share/go
   export GOROOT=/usr/local/go
-  export GOMODCACHE="$XDG_CACHE_HOME"/go/mod
+  export GOMODCACHE=$HOME/.cache/go/mod
 
   if command -v go >/dev/null 2>&1; then
     current_version=$(go version | awk '{print $3}' | sed 's/go//')
