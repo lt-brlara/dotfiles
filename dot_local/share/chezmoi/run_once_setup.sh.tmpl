@@ -71,7 +71,7 @@ install_ghq() {
     export GOMODCACHE=$HOME/.cache/go/mod
 
     GO111MODULE=on go install github.com/x-motemen/ghq@latest >>"$LOGFILE" 2>&1
-    sudo install -m 755 "$HOME/go/bin/ghq" /usr/local/bin/ghq
+    sudo install -m 755 "$GOPATH/bin/ghq" /usr/local/bin/ghq
   fi
   {{ end -}}
   {{ end -}}
