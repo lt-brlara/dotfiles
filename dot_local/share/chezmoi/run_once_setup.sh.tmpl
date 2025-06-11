@@ -7,8 +7,8 @@ mkdir -p "$(dirname "$LOGFILE")"
 : > "$LOGFILE"  # clear previous log
 
 # Log functions
-log()      { printf "[INFO] %s\n" "$1" | tee -a "$LOGFILE"; }
-logwarn()  { printf "[\e[33mWARN\e[0m] %s\n" "$1" | tee -a "$LOGFILE"; }
+log()      { printf "[INFO]  %s\n" "$1" | tee -a "$LOGFILE"; }
+logwarn()  { printf "[\e[33mWARN\e[0m]  %s\n" "$1" | tee -a "$LOGFILE"; }
 logerror() { printf "[\e[31mERROR\e[0m] %s\n" "$1" | tee -a "$LOGFILE" >&2; }
 
 main() {
@@ -43,6 +43,11 @@ install_core_packages() {
   {{ range .packages.linux.apt -}}
   install_package {{ . | quote }}
   {{ end -}}
+  {{ else }}
+  logwarn "❌ Unsupported operating system: $(uname -a)"
+  logwarn "📦 Skipping core package install..."
+  return
+
   {{ end -}}
   log "✅ Core packages installed!"
 }
@@ -231,7 +236,9 @@ silent_install_package() {
     logerror "❌ Failed to install $i"
   fi
   {{ end }}
-
+  {{ else }}
+  logerror "❌ Unsupported OS, skipping install of packages [$@]"
+  return
   {{ end }}
   done
 }
@@ -250,6 +257,9 @@ update_package_manager() {
   {{ if eq .chezmoi.osRelease.id "arch" -}}
   silent_run sudo pacman -Syu
   {{ end }}
+  {{ else }}
+  logerror "❌ Unsupported OS, unable to update package manager"
+  exit 1
 
   {{ end }}
 }
@@ -268,6 +278,8 @@ systemd=true
 EOF
   log "✅ WSL configurations applied!"
   {{ end }}
+  {{ else }}
+  return
   {{ end }}
 }
 
