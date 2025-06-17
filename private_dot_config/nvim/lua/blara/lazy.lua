@@ -24,7 +24,7 @@ local plugins = {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" }
   },
-  {"olimorris/onedarkpro.nvim", tag = "0.8.0"},
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   {"morhetz/gruvbox"},
 	{
 		"catppuccin/nvim",
