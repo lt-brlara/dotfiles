@@ -34,7 +34,11 @@ main() {
 }
 
 config_shell() {
-  sudo chsh blara -s "$(command -v zsh)"
+  {{ if eq .chezmoi.os "darwin" -}}
+  silent_run sudo chsh -s "$(command -v zsh)" $USER
+  {{ else }}
+  sudo chsh $USER -s "$(command -v zsh)"
+  {{ end }}
   log "🐚 Shell successfully configured!"
 }
 
@@ -44,7 +48,6 @@ install_core_packages() {
   install_package {{ . | quote }}
   {{ end -}}
   {{ else }}
-  logwarn "❌ Unsupported operating system: $(uname -a)"
   logwarn "📦 Skipping core package install..."
   return
 
@@ -85,8 +88,10 @@ install_ghq() {
 }
 
 install_go() {
+  OS={{ .chezmoi.os | quote }}
+  ARCH={{ .chezmoi.arch | quote }}
   GO_VERSION="1.24.4"
-  GO_ARCHIVE="go${GO_VERSION}.linux-amd64.tar.gz"
+  GO_ARCHIVE="go${GO_VERSION}.${OS}-${ARCH}.tar.gz"
   GO_INSTALL_PATH="/usr/local/bin"
 
   export GOPATH=$HOME/.local/share/go
@@ -100,6 +105,7 @@ install_go() {
       return
     else
       logwarn "🔄 Updating Go to $GO_VERSION (current: $current_version)"
+      silent_run sudo mv ${GO_INSTALL_PATH}/go ${GO_INSTALL_PATH}/go.backup
     fi
   else
     log "📥 Installing Go $GO_VERSION..."
@@ -159,6 +165,11 @@ build_and_install_nvim() {
 }
 
 build_and_install_tmux() {
+  {{ if eq .chezmoi.os "darwin" -}}
+  logwarn "📦 Skipping install of tmux"
+  return
+  {{ end }}
+
   TMUX_VERSION="3.5"
 
   if command -v tmux >/dev/null 2>&1; then
@@ -245,22 +256,18 @@ silent_install_package() {
 
 update_package_manager() {
   {{ if eq .chezmoi.os "linux" -}}
-
   {{ if eq .chezmoi.osRelease.id "debian" "ubuntu" -}}
   silent_run sudo DEBIAN_FRONTEND=noninteractive apt-get update -qq
   {{ end }}
-
   {{ if eq .chezmoi.osRelease.id "fedora" -}}
   silent_run sudo yum update
   {{ end }}
-
   {{ if eq .chezmoi.osRelease.id "arch" -}}
   silent_run sudo pacman -Syu
   {{ end }}
   {{ else }}
-  logerror "❌ Unsupported OS, unable to update package manager"
-  exit 1
-
+  logerror "❌ Unsupported operating system: $(uname -a)"
+  return
   {{ end }}
 }
 
@@ -289,7 +296,6 @@ install_rust() {
   silent_run ./rustup-init.sh -y
   source $HOME/.cargo/env
   rm ./rustup-init.sh
-
   log "🦀 Rust installed!"
 }
 
