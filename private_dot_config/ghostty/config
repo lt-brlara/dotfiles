@@ -1,1 +1,8 @@
-theme = Solarized Dark - Patched
+theme       = catppuccin-frappe
+font-family = SpaceMono Nerd Font Mono
+
+window-decoration = auto
+window-theme      = system
+
+shell-integration-features = true
+copy-on-select             = clipboard
