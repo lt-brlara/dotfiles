@@ -12,7 +12,7 @@ local settings = {
 
   wrap = false,
 
-  undodir  = os.getenv("HOME") .. "/.vim/undodir",
+  undodir  = os.getenv("XDG_DATA_HOME") .. "/vim/undodir",
   undofile = true,
   swapfile = false,
   backup   = false,
@@ -25,8 +25,6 @@ local settings = {
   scrolloff = 8,
 
   updatetime = 50,
-
-  colorcolumn = "80"
 }
 
 vim.g.mapleader = "\\"
