@@ -4,8 +4,10 @@
   pager  = less
   
   excludesFile = $XDG_CONFIG_HOME/git/gitignore_global
+  {{- if hasKey .chezmoi.kernel "osrelease" -}}
   {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
   sshCommand = ssh.exe
+  {{ end }}
   {{ end }}
 
 [user]
