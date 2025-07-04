@@ -285,9 +285,8 @@ systemd=true
 EOF
   log "✅ WSL configurations applied!"
   {{ end }}
-  {{ else }}
-  return
   {{ end }}
+  return
 }
 
 install_rust() {
