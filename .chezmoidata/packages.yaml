@@ -1,10 +1,4 @@
 packages:
-  darwin:
-    brews:
-    - git
-    casks:
-    - google-chrome
-  
   linux:
     apt:
       - build-essential

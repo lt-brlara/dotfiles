@@ -1,4 +1,4 @@
-theme       = catppuccin-frappe
+theme       = light:Gruvbox Light,dark:Gruvbox Material Dark
 font-family = SpaceMono Nerd Font Mono
 
 window-decoration = auto

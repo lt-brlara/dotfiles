@@ -1,12 +1,6 @@
 # Homebrew dependencies
 brew 'gcc'
 
-tap 'homebrew/bundle'
-tap 'homebrew/cask'
-tap 'homebrew/cask-fonts'
-tap 'homebrew/cask-versions'
-tap 'homebrew/core'
-
 # Config Manager
 brew 'chezmoi'
 
@@ -16,18 +10,16 @@ brew 'brew-file'
 brew 'mas'
 
 # Fonts
-cask 'font-fira-code'
+cask 'font-fira-code-nerd-font'
+cask 'font-space-mono-nerd-font'
 
 # ZSH
 brew 'zsh'
 
 # ZSH Profile Dependencies
-brew 'exa'
-brew 'peco'
+brew 'eza'
 brew 'ghq'
 brew 'direnv'
-brew 'neofetch'
-brew 'z'
 brew 'fzf'
 
 # NVIM
@@ -54,20 +46,6 @@ cask 'keepassxc'
 cask '1password'
 cask '1password-cli'
 
-# Cloud
-
-cask 'google-cloud-sdk'
-
-brew 'helm'
-brew 'kubernetes-cli'
-brew 'awscli'
-brew 'azure-cli'
-
-brew 'packer'
-brew 'terraform'
-
-brew 'ansible'
-
 # Development
 
 ## Base
@@ -75,8 +53,6 @@ brew 'ansible'
 brew 'git'
 brew 'nvim'
 brew 'tmux'
-brew 'podman'
-cask 'visual-studio'
 
 ## Collab
 brew 'glab'
@@ -93,6 +69,10 @@ brew 'go'
 
 ## Rust
 brew 'rustup-init'
+
+## Python
+brew 'python'
+brew 'uv'
 
 # Base Apps
 cask 'discord'
