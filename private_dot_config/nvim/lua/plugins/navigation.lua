@@ -17,6 +17,11 @@ return {
         "<cmd>Telescope buffers<cr>",
         desc = "Telescope switch buffers",
       },
+      {
+        "<leader>fg",
+        "<cmd>Telescope live_grep<cr>",
+        desc = "Telescope live grep",
+      },
     }
   },
   { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = {}},

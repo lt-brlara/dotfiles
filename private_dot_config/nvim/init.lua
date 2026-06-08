@@ -21,7 +21,7 @@ vim.keymap.set('n', '<leader>dp', function()
   vim.diagnostic.jump({ count = -1 })
 end, { desc = 'Go to previous diagnostic' })
 
-vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float)
+vim.keymap.set('n', '<leader>dv', vim.diagnostic.open_float)
 
 vim.lsp.enable({
   "rust_analyzer",
