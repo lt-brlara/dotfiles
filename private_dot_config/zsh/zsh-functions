@@ -1,4 +1,3 @@
-
 function zsh_add_file() {
     [ -f "$ZDOTDIR/$1" ] && source "$ZDOTDIR/$1"
 }
@@ -30,27 +29,6 @@ function zsh_add_completion() {
 	if [ "$2" = true ] && compinit "${completion_file:1}"
 }
 
-_python_argcomplete() {
-    local IFS=$'\013'
-    local SUPPRESS_SPACE=0
-    if compopt +o nospace 2> /dev/null; then
-        SUPPRESS_SPACE=1
-    fi
-    COMPREPLY=( $(IFS="$IFS" \
-                  COMP_LINE="$COMP_LINE" \
-                  COMP_POINT="$COMP_POINT" \
-                  COMP_TYPE="$COMP_TYPE" \
-                  _ARGCOMPLETE_COMP_WORDBREAKS="$COMP_WORDBREAKS" \
-                  _ARGCOMPLETE=1 \
-                  _ARGCOMPLETE_SUPPRESS_SPACE=$SUPPRESS_SPACE \
-                  "$1" 8>&1 9>&2 1>/dev/null 2>/dev/null) )
-    if [[ $? != 0 ]]; then
-        unset COMPREPLY
-    elif [[ $SUPPRESS_SPACE == 1 ]] && [[ "$COMPREPLY" =~ [=/:]$ ]]; then
-        compopt -o nospace
-    fi
-}
-
 function quick_change_directory {
   local dir
   dir=$(find ${1:-.} -path '*/\.*' -prune \
@@ -60,11 +38,6 @@ function quick_change_directory {
 
 function quick_select_history() {
   eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
-}
-
-function fuck() {
-  eval $(thefuck --alias)
-  fuck "@"
 }
 
 function nvm() {
@@ -91,17 +64,6 @@ function npm() {
 function pyenv() {
   eval "$( command pyenv init - )"
   pyenv "$@"
-}
-
-function gcloud() {
-    unfunction "$0"
-    {{ if eq .chezmoi.os "darwin" -}}
-    source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-    source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-    {{ else if eq .chezmoi.os "linux" -}}
-    source "/usr/share/google-cloud-sdk/completion.zsh.inc" 
-    {{ end -}}
-    command gcloud "$@"
 }
 
 # Keybind functions
